@@ -7,13 +7,23 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 - [Getting\_Started\_With\_FastAPI](#getting_started_with_fastapi)
   - [독서 기록](#독서-기록)
   - [단어 정리](#단어-정리)
-  - [CRUD](#crud)
-  - [상태 코드](#상태-코드)
+  - [FastAPI](#fastapi)
+    - [FastAPI 코드](#fastapi-코드)
+    - [FastAPI OpenAPI](#fastapi-openapi)
   - [동시성](#동시성)
   - [비동기식 시스템](#비동기식-시스템)
   - [책에서 사용되는 계층](#책에서-사용되는-계층)
   - [파이썬 관련](#파이썬-관련)
   - [파이썬 관련 툴](#파이썬-관련-툴)
+  - [테스트](#테스트)
+    - [pytest](#pytest)
+  - [웹 Web](#웹-web)
+    - [웹 정의](#웹-정의)
+    - [CRUD](#crud)
+    - [상태 코드](#상태-코드)
+    - [응답 유형](#응답-유형)
+    - [response 클래스에 필요한 요소](#response-클래스에-필요한-요소)
+    - [request, model, response](#request-model-response)
   - [인사이트](#인사이트)
 
 ## 독서 기록
@@ -22,6 +32,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 |---|---|---|
 | 2025-01-02 | 1 | 36 |
 | 2025-01-03 | 37 | 50 |
+| 2025-01-05 | 51 | 74 |
 |---|---|---|
 
 ## 단어 정리
@@ -32,25 +43,20 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 웹 서버 게이트웨이 인터페이스 | WSGI | 동기식 웹 서버 연결 방식 |
 | 파이썬 비동기 서버 게이트웨이 인터페이스 | ASGI | 비동기식 웹 서버 연결 방식 |
 
-## CRUD
-
-- POST: 만들기(쓰기)
-- PUT: 전체 수정(갈아 끼우기)
-- PATCH: 부분 수정(고치기)
-- GET: 가져오기(읽기, 찾기)
-- DELETE: 삭제
-
-## 상태 코드
-
-- 100번대: 정보, 계속 진행
-- 200번대: 성공
-- 300번대: 리다이렉션
-- 400번대: 클라이언트 오류
-- 500번대: 서버 오류
-
 > 상태 코드 중 418은 I'm a teapot(<https://www.google.com/teapot>) 으로 웹에 연결된 찻주전자에 커피를 내리라는 요청을 보내면 반환되는 코드이다. 즉, 이스터에그이다.(서버가 찻주전자이므로 커피 내리기를 거절했다는 코드)
 
 ![I'm a tea pot](src/I'm%20a%20teapot.png)
+
+## FastAPI
+
+### FastAPI 코드
+
+- response_model: 반환할 정보를 해당 객체로 변경
+
+### FastAPI OpenAPI
+
+- localhost:8000/docs: 자동 API 문서화 기능
+- localhost:8000/redoc: 사용자 친화적인 API 문서화 기능
 
 ## 동시성
 
@@ -87,6 +93,66 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 - pytest: 테스팅 관리
 - pre-commit: 지속적 통합 제공
 - mypy: 타입 힌트 검사기
+
+## 테스트
+
+- requests: http 요청을 보내는 라이브러리
+- httpx: 비동기 http 요청을 보낼 때 유용한 라이브러리
+
+### pytest
+
+- fixture: 테스트 함수들이 공통적으로 사용할 데이터 설정 및 초기화, 다른 테스트 함수에 자동으로 전달됨(재사용성 증가, 코드 중복 감소)
+- with pytest.raises(Exception): 테스트시 해당 코드에서 에러가 발생됨을 확인
+
+## 웹 Web
+
+### 웹 정의
+
+- Header: HTTP 헤더
+- Path: URL
+- Query: 쿼리 매개변수 (URL 끝의 ? 뒤), localhost:8000/docs?
+- Body: HTTP 본문
+
+> 혹시나 RESTful 원칙을 강요하는 검사가 우리를 고소한다면, 대단한 법원이나 구경하고 오라한다.
+
+### CRUD
+
+- POST: 만들기(쓰기)
+- PUT: 전체 수정(갈아 끼우기)
+- PATCH: 부분 수정(고치기)
+- GET: 가져오기(읽기, 찾기)
+- DELETE: 삭제
+
+### 상태 코드
+
+- 100번대: 정보, 계속 진행
+- 200번대: 성공
+- 300번대: 리다이렉션
+- 400번대: 클라이언트 오류
+- 500번대: 서버 오류
+
+### 응답 유형
+
+- JSONResponse(기본값)
+- HTMLResponse
+- PlainTextResponse
+- RedirectResponse
+- FileResponse
+- StreamingResponse
+
+### response 클래스에 필요한 요소
+
+- content: 콘텐츠, 문자열 또는 바이트 형식
+- media_type: 미디어 유형, 문자열 형태의 MIME 유형 값
+  - MIME: Multipurpose Internet Mail Extensions, 전자 우편 인터넷 표준
+- status_code: 상태 코드
+- headers: 헤더, 문자열 dict 형식
+
+### request, model, response
+
+- request: 사용자가 제공해야 하는 정보(TagIn)
+- model: 내부에서 사용하지만 외부에 노출되지 않아야 하는 정보(Tag)
+- response: 사용자에게 반환할 수 있는 정보(TagOut)
 
 ## 인사이트
 
