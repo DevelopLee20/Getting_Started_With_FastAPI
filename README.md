@@ -48,10 +48,6 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 유스케이스 | Use case | 행위자가 일을 달성하기 위한 시나리오 집합 명시 |
 | 보일러플레이트 코드 | Boilerplate Code | 최소한의 수정으로 여러 곳에 필수적으로 사용되는 코드 |
 
-> 상태 코드 중 418은 I'm a teapot(<https://www.google.com/teapot>) 으로 웹에 연결된 찻주전자에 커피를 내리라는 요청을 보내면 반환되는 코드이다. 즉, 이스터에그이다.(서버가 찻주전자이므로 커피 내리기를 거절했다는 코드)
-
-![I'm a tea pot](src/I'm%20a%20teapot.png)
-
 ## FastAPI
 
 ### FastAPI 코드
@@ -113,10 +109,10 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 from pydantic import BaseModel, constr, conint, conlist, Field
 
 class Creature(BaseModel):
-    name: str = constr(min_length=2)
+    name: constr(min_length=2)        # 형식 식에는 호출 식을 사용할 수 없습니다.
     age: conint(gt=2)                 # 형식 식에는 호출 식을 사용할 수 없습니다.
     job: conlist(str, min_length=2)   # 형식 식에는 호출 식을 사용할 수 없습니다.
-    note: Field(..., min_length=2)    # 형식 식에는 호출 식을 사용할 수 없습니다.
+    note: Field(..., min_length=2)    
 ```
 
 > pylance는 해당 코드에 문제를 발생시킨다(문법적으로 문제없음). 아래는 대안이다.
@@ -167,6 +163,10 @@ class Creature(BaseModel):
 - 300번대: 리다이렉션
 - 400번대: 클라이언트 오류
 - 500번대: 서버 오류
+
+> 상태 코드 중 418은 I'm a teapot(<https://www.google.com/teapot>) 으로 웹에 연결된 찻주전자에 커피를 내리라는 요청을 보내면 반환되는 코드이다. 즉, 이스터에그이다.(서버가 찻주전자이므로 커피 내리기를 거절했다는 코드)
+
+![I'm a tea pot](src/I'm%20a%20teapot.png)
 
 ### 응답 유형
 
