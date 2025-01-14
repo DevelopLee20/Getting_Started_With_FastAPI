@@ -14,7 +14,9 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
   - [비동기식 시스템](#비동기식-시스템)
   - [책에서 사용되는 계층](#책에서-사용되는-계층)
   - [파이썬 관련](#파이썬-관련)
-  - [파이썬 관련 툴](#파이썬-관련-툴)
+    - [타입 힌트](#타입-힌트)
+    - [파이썬 관련 툴](#파이썬-관련-툴)
+    - [파이썬 pylance](#파이썬-pylance)
   - [테스트](#테스트)
     - [pytest](#pytest)
   - [웹 Web](#웹-web)
@@ -33,6 +35,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 2025-01-02 | 1 | 36 |
 | 2025-01-03 | 37 | 50 |
 | 2025-01-05 | 51 | 74 |
+| 2025-01-14 | 75 | 106 |
 |---|---|---|
 
 ## 단어 정리
@@ -42,6 +45,8 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 스코프 | scope | 동일한 객체를 가리키는 코드 영역 |
 | 웹 서버 게이트웨이 인터페이스 | WSGI | 동기식 웹 서버 연결 방식 |
 | 파이썬 비동기 서버 게이트웨이 인터페이스 | ASGI | 비동기식 웹 서버 연결 방식 |
+| 유스케이스 | Use case | 행위자가 일을 달성하기 위한 시나리오 집합 명시 |
+| 보일러플레이트 코드 | Boilerplate Code | 최소한의 수정으로 여러 곳에 필수적으로 사용되는 코드 |
 
 > 상태 코드 중 418은 I'm a teapot(<https://www.google.com/teapot>) 으로 웹에 연결된 찻주전자에 커피를 내리라는 요청을 보내면 반환되는 코드이다. 즉, 이스터에그이다.(서버가 찻주전자이므로 커피 내리기를 거절했다는 코드)
 
@@ -50,6 +55,8 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 ## FastAPI
 
 ### FastAPI 코드
+
+> FastAPI의 웹 코드는 대부분 Starlette 패키지를 기반으로 한다.
 
 - response_model: 반환할 정보를 해당 객체로 변경
 
@@ -70,6 +77,8 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 - 이벤트 루프에 작업 요청을 보낸 후 표시.
 - 보낸 작업이 이벤트 루프에서 시작됐다는 즉각적인 응답을 받고 넘어감.
 - 보내진 작업의 결과는 작업이 완료된 후 처리됨.
+- async와 await를 무작정 사용한다고 해서 더 빠르게 실행되지 않고, 비동기 설정하는 오버헤드 때문에 조금 더 느려질 수 있음.
+- I/O를 오래 기다리지 않기 위해서 사용됨
 
 ## 책에서 사용되는 계층
 
@@ -84,15 +93,43 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 
 ## 파이썬 관련
 
-- 타입 힌트는 3.6 이상에서 제공하는 기능
+### 타입 힌트
 
-## 파이썬 관련 툴
+- 타입 힌트는 3.6 이상에서 제공하는 기능
+- 파이썬 버전 3.9 이전에서는 typing 라이브러리의 데이터 타입을 사용해야 한다.
+- 파이썬 3.10 이상에서는 Union[type1 | type2]를 type1 | type2 의 형태로 작성한다.
+
+### 파이썬 관련 툴
 
 - Poetry: 가상환경 관리
 - black: 코드 포매팅
 - pytest: 테스팅 관리
 - pre-commit: 지속적 통합 제공
 - mypy: 타입 힌트 검사기
+
+### 파이썬 pylance
+
+```python
+from pydantic import BaseModel, constr, conint, conlist, Field
+
+class Creature(BaseModel):
+    name: str = constr(min_length=2)
+    age: conint(gt=2)                 # 형식 식에는 호출 식을 사용할 수 없습니다.
+    job: conlist(str, min_length=2)   # 형식 식에는 호출 식을 사용할 수 없습니다.
+    note: Field(..., min_length=2)    # 형식 식에는 호출 식을 사용할 수 없습니다.
+```
+
+> pylance는 해당 코드에 문제를 발생시킨다(문법적으로 문제없음). 아래는 대안이다.
+
+```python
+from pydantic import BaseModel, constr, conint, conlist, Field
+
+class Creature(BaseModel):
+    name: str = constr(min_length=2)        # 최소 길이 지정
+    age: int = conint(gt=2)                 # 최소 값 지정
+    job: list = conlist(str, min_length=2)  # 데이터 타입과 최소 길이 지정
+    note: str = Field(..., min_length=2)    # ...은 기본값이 필요없음, 다른 타입의 대안으로 사용
+```
 
 ## 테스트
 
@@ -158,3 +195,4 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 
 - GraphQL(<https://graphql.org>)
 - NewSQL
+- 그린스레드
