@@ -17,6 +17,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
     - [타입 힌트](#타입-힌트)
     - [파이썬 관련 툴](#파이썬-관련-툴)
     - [파이썬 pylance](#파이썬-pylance)
+    - [__init__.py](#initpy)
   - [테스트](#테스트)
     - [pytest](#pytest)
   - [웹 Web](#웹-web)
@@ -26,6 +27,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
     - [응답 유형](#응답-유형)
     - [response 클래스에 필요한 요소](#response-클래스에-필요한-요소)
     - [request, model, response](#request-model-response)
+    - [일반적인 Restful url 규칙](#일반적인-restful-url-규칙)
   - [의존성](#의존성)
     - [의존성 관련 문제](#의존성-관련-문제)
     - [의존성 주입 방법](#의존성-주입-방법)
@@ -40,6 +42,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 2025-01-05 | 51 | 74 |
 | 2025-01-14 | 75 | 106 |
 | 2025-01-15 | 107 | 114 |
+| 2025-02-06 | 115 | 138 |
 |---|---|---|
 
 ## 단어 정리
@@ -53,6 +56,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 보일러플레이트 코드 | Boilerplate Code | 최소한의 수정으로 여러 곳에 필수적으로 사용되는 코드 |
 | 의존성 | dependency | 어떤 시점에 필요한 특정 정보 |
 | 헬퍼 함수 | Helper Functions | 함수 안에서 다른 함수의 값을 반환하는 함수 |
+| 스텁 | stub | 동작 중인 모듈을 호출하지 않고 반환되는 미리 준비된 응답 |
 |---|---|---|
 
 ## FastAPI
@@ -134,6 +138,11 @@ class Creature(BaseModel):
     note: str = Field(..., min_length=2)    # ...은 기본값이 필요없음, 다른 타입의 대안으로 사용
 ```
 
+### __init__.py
+
+- 폴더 내에 존재하면 해당 디렉터리를 import 할 수 있는 패키지로 취급함
+- 디렉토리가 하위 계층을 빌드할 때 상위 계층에 일부 스텁 데이터를 제공함
+
 ## 테스트
 
 - requests: http 요청을 보내는 라이브러리
@@ -197,6 +206,20 @@ class Creature(BaseModel):
 - request: 사용자가 제공해야 하는 정보(TagIn)
 - model: 내부에서 사용하지만 외부에 노출되지 않아야 하는 정보(Tag)
 - response: 사용자에게 반환할 수 있는 정보(TagOut)
+
+### 일반적인 Restful url 규칙
+
+```sql
+<동작> /resource/
+```
+
+- resource 유형의 모든 리소스에 <동작>을 적용한다.
+
+```sql
+<동작> /resource/id
+```
+
+- id가 있는 resource에 <동작>을 적용한다.
 
 ## 의존성
 
