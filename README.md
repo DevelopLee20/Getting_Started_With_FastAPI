@@ -19,7 +19,9 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
     - [파이썬 pylance](#파이썬-pylance)
     - [__init__.py](#initpy)
   - [테스트](#테스트)
-    - [pytest](#pytest)
+  - [pytest](#pytest)
+    - [pytest 네이밍 룰](#pytest-네이밍-룰)
+    - [pytest.ini](#pytestini)
   - [웹 Web](#웹-web)
     - [웹 정의](#웹-정의)
     - [CRUD](#crud)
@@ -28,6 +30,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
     - [response 클래스에 필요한 요소](#response-클래스에-필요한-요소)
     - [request, model, response](#request-model-response)
     - [일반적인 Restful url 규칙](#일반적인-restful-url-규칙)
+    - [웹 기술 아이디어](#웹-기술-아이디어)
   - [의존성](#의존성)
     - [의존성 관련 문제](#의존성-관련-문제)
     - [의존성 주입 방법](#의존성-주입-방법)
@@ -43,6 +46,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 2025-01-14 | 75 | 106 |
 | 2025-01-15 | 107 | 114 |
 | 2025-02-06 | 115 | 138 |
+| 2025-02-08 | 139 | 157 |
 |---|---|---|
 
 ## 단어 정리
@@ -148,10 +152,25 @@ class Creature(BaseModel):
 - requests: http 요청을 보내는 라이브러리
 - httpx: 비동기 http 요청을 보낼 때 유용한 라이브러리
 
-### pytest
+## pytest
 
 - fixture: 테스트 함수들이 공통적으로 사용할 데이터 설정 및 초기화, 다른 테스트 함수에 자동으로 전달됨(재사용성 증가, 코드 중복 감소)
 - with pytest.raises(Exception): 테스트시 해당 코드에서 에러가 발생됨을 확인
+
+### pytest 네이밍 룰
+
+- 테스트 함수는 'test_' 로 시작하거나 '_test'로 끝나야 한다.
+- 테스트 클래스는 Test로 시작해야 한다.
+- 테스트 파일은 'test_'로 시작해야 한다.
+
+### pytest.ini
+
+```ini
+[pytest]
+pythonpath = src
+```
+
+- 해당 파일을 프로젝트 최상위 디렉터리에 만들고 작성하면, pytest가 모듈을 찾을 수 있게된다.
 
 ## 웹 Web
 
@@ -221,6 +240,15 @@ class Creature(BaseModel):
 
 - id가 있는 resource에 <동작>을 적용한다.
 
+### 웹 기술 아이디어
+
+> 아래의 4가지 아이디어는 소규모 사이트에도 적용하면 좋다. 특히 사용자가 무엇을 원하는지 알기 쉬워진다.
+
+- 로깅
+- 지표
+- 모니터링
+- 추적
+
 ## 의존성
 
 > 어떤 시점에 필요한 특정 정보, 정보가 필요한 시점에 바로 가져오는 코드
@@ -244,3 +272,5 @@ class Creature(BaseModel):
 - GraphQL(<https://graphql.org>)
 - NewSQL
 - 그린스레드
+- Prometheus(<https://prometheus.io/>) 통계 시각화 툴
+- Grafana(<https://grafana.com/>) 통계 시각화 툴
