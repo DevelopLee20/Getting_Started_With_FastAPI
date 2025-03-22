@@ -10,6 +10,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
   - [FastAPI](#fastapi)
     - [FastAPI 코드](#fastapi-코드)
     - [FastAPI OpenAPI](#fastapi-openapi)
+    - [FastAPI Logging](#fastapi-logging)
   - [동시성](#동시성)
   - [비동기식 시스템](#비동기식-시스템)
   - [책에서 사용되는 계층](#책에서-사용되는-계층)
@@ -47,6 +48,7 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 | 2025-01-15 | 107 | 114 |
 | 2025-02-06 | 115 | 138 |
 | 2025-02-08 | 139 | 157 |
+| 2025-03-22 | 158 | 160 |
 |---|---|---|
 
 ## 단어 정리
@@ -75,6 +77,11 @@ rep: 처음 시작하는 FastAPI, 빌 루바노빅, 한빛미디어
 
 - localhost:8000/docs: 자동 API 문서화 기능
 - localhost:8000/redoc: 사용자 친화적인 API 문서화 기능
+
+## FastAPI Logging
+
+- 엔드포인트(Endpoint)에 대한 각 API 호출을 기록
+- 본문(Payload)나 헤더(Header)를 통해 전달되는 데이터는 기록하지 않음
 
 ## 동시성
 
@@ -272,5 +279,6 @@ pythonpath = src
 - GraphQL(<https://graphql.org>)
 - NewSQL
 - 그린스레드
-- Prometheus(<https://prometheus.io/>) 통계 시각화 툴
-- Grafana(<https://grafana.com/>) 통계 시각화 툴
+- Prometheus(<https://prometheus.io/>) 지표(metrics) 수집 툴
+- Grafana(<https://grafana.com/>) 지표(metrics) 표시 툴
+- OpenTelemetry(<https://opentelemetry.io/>) 추적(Trace) 관련 툴
